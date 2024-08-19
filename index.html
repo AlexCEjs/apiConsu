@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dragon Ball Characters</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold text-center mb-8">Dragon Ball Characters</h1>
+        <div id="cards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Cards will be appended here -->
+        </div>
+    </div>
+
+    <script>
+        // Fetch the JSON data from the API
+        fetch('https://backend-vlzt.onrender.com/api/characters')
+            .then(response => response.json())
+            .then(data => {
+                const cardsContainer = document.getElementById('cards-container');
+
+                data.forEach(character => {
+                    const card = document.createElement('div');
+                    card.className = 'bg-white shadow-lg rounded-lg overflow-hidden';
+
+                    card.innerHTML = `
+                        <img class="w-full h-48 object-cover" src="${character.image}" alt="${character.name}">
+                        <div class="p-4">
+                            <h2 class="text-2xl font-bold">${character.name}</h2>
+                            <p class="text-gray-600"><strong>Race:</strong> ${character.race}</p>
+                            <p class="text-gray-600"><strong>Gender:</strong> ${character.gender}</p>
+                            <p class="text-gray-600"><strong>Ki:</strong> ${character.ki}</p>
+                            <p class="text-gray-600"><strong>Max Ki:</strong> ${character.maxKi}</p>
+                            <p class="mt-2 text-gray-800">${character.description}</p>
+                        </div>
+                    `;
+
+                    cardsContainer.appendChild(card);
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    </script>
+</body>
+</html>
